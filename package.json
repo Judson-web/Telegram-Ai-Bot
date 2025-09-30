@@ -1,23 +1,28 @@
 {
   "name": "telegram-ai-bot",
   "version": "1.0.0",
-  "description": "A feature-rich, modular Telegram bot.",
+  "description": "A modular Telegram bot.",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "postinstall": "npm run build"
+    "dev": "ts-node index.tsx"
   },
-  "author": "",
+  "keywords": [
+    "telegram",
+    "bot"
+  ],
+  "author": "Judson-web",
   "license": "Apache-2.0",
   "dependencies": {
-    "dotenv": "^16.4.5",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.64.0",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.10.0",
     "@types/node-telegram-bot-api": "^0.64.0",
-    "typescript": "^5.3.3"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
   },
   "engines": {
     "node": ">=18.0.0"
