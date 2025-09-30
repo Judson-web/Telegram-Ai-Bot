@@ -1,0 +1,34 @@
+{
+  "name": "Telegram AI Bot",
+  "description": "A feature-rich, modular Telegram bot that can be easily deployed to Heroku.",
+  "repository": "https://github.com/your-username/your-repo-name",
+  "logo": "https://www.vectorlogo.zone/logos/telegram/telegram-ar21.svg",
+  "keywords": ["telegram", "bot", "nodejs", "typescript"],
+  "env": {
+    "BOT_TOKEN": {
+      "description": "Your Telegram Bot Token from @BotFather.",
+      "value": "",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "Your personal Telegram User ID for owner-only commands.",
+      "value": "",
+      "required": true
+    },
+    "PREFIX": {
+      "description": "A single character prefix for commands.",
+      "value": ".",
+      "required": false
+    },
+    "DATABASE_URL": {
+      "description": "(Optional) Your MongoDB connection string.",
+      "value": "",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
