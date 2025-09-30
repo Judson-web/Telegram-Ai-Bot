@@ -1,0 +1,8 @@
+# The command to run when the "Run" button is pressed.
+run = "npm install && npm run build && npm start"
+
+# The language of your project.
+language = "typescript"
+
+# Specifies which file to show by default in the editor.
+entrypoint = "index.tsx"
