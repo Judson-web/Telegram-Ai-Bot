@@ -1,87 +1,96 @@
-# Telegram AI Bot for Replit
+# NexAi - A Feature-Rich Telegram AI Bot
 
-A modular and extensible Telegram bot built with Node.js and TypeScript, configured for easy deployment on Replit.
+Welcome to NexAi, a powerful, modular, and intelligent Telegram bot built with Node.js, TypeScript, and powered by the Google Gemini API. NexAi is designed to be a versatile assistant, capable of everything from natural conversation and live web searches to image generation and a wide array of utility tasks.
 
-## Features
+## ✨ Core Features
 
-- **Modular Plugin System**: Easily add new features by creating new plugin files.
-- **Welcome Messages**: Automatically greet new members with a customizable message (via a simple file-based DB).
-- **Fun Commands**: Includes commands like `/start`, `/alive`, `/echo`, and `/quote`.
-- **Replit Ready**: Fully configured to run in a Replit environment.
+- **AI by Default**: No command needed! Chat directly with NexAi for a natural, conversational experience.
+- **Live Internet Access**: Powered by Google Search, NexAi can provide up-to-the-minute information on current events, people, and topics.
+- **Context-Aware Conversations**: NexAi remembers the recent history of your chat to provide relevant and coherent follow-up responses.
+- **Advanced Image Generation**: Create images from text with support for aspect ratios and negative prompts.
+- **Extensive Plugin System**: A huge collection of commands for utilities, information, creative tools, and fun.
+- **Group Ready**: Features custom welcome messages and group-specific commands like polls.
+- **Easy Deployment**: Optimized for a quick and simple setup on Replit.
 
----
+## 🚀 Deploying on Replit
 
-## Getting Started: Prerequisites
+Follow these steps to get your own instance of NexAi running in minutes.
 
-Before deploying, you will need:
+### Prerequisites
 
-1.  **A Telegram Bot Token**: This is a unique key you get from Telegram to control your bot.
-2.  **Your Telegram User ID**: This is needed for owner-only commands.
-3.  **A GitHub Repository**: Your bot's code should be in a GitHub repository.
+1.  **Telegram Bot Token**: Get this from [@BotFather](https://t.me/BotFather) on Telegram.
+2.  **Google AI API Key**: Get your free API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+3.  **Your Telegram User ID**: Get this from a bot like [@userinfobot](https://t.me/userinfobot). This is needed for any owner-specific commands in the future.
 
-### 1. How to get a Telegram Bot Token
+### Step-by-Step Guide
 
-- Open your Telegram app and search for a bot called **`@BotFather`**.
-- Start a chat with `@BotFather` and send the `/newbot` command.
-- Follow the on-screen instructions to choose a name and username for your bot.
-- Once finished, `@BotFather` will give you a **token**.
-- **Copy this token and save it somewhere safe. Do not share it publicly.**
+1.  **Import Repository**:
+    *   Go to [replit.com](https://replit.com).
+    *   Click the **"+"** button to create a new Repl.
+    *   Select **"Import from GitHub"** on the top right.
+    *   Paste the URL of your bot's GitHub repository.
 
-### 2. How to get your Telegram User ID
+2.  **Configure Secrets**:
+    *   Once the repository is imported, go to the **Secrets** tab (it has a padlock icon 🔒).
+    *   Add the following secrets:
+        *   `BOT_TOKEN`: Your Telegram Bot Token.
+        *   `API_KEY`: Your Google AI (Gemini) API Key.
 
-- In your Telegram app, search for a bot called **`@userinfobot`**.
-- Start a chat with `@userinfobot`, and it will immediately reply with your User ID.
+3.  **Run the Bot**:
+    *   Simply click the big **"Run"** button at the top.
+    *   Replit will automatically install all dependencies, compile the TypeScript code, and start the bot. You will see "NexAi Bot has been started..." in the console when it's ready.
 
----
+4.  **Keep it Alive (24/7)**:
+    *   To keep your bot running even after you close the browser, click on the name of your Repl at the top and select **"Deployments"**.
+    *   Follow the on-screen instructions to set up a deployment. This will ensure your bot is always online.
 
-## Detailed Deployment Guide for Replit
+## 🤖 Command Reference
 
-Follow these steps to get your bot running on Replit.
+Here is a complete list of commands available in NexAi.
 
-### Step 1: Import Your Repository into Replit
+#### General Commands
+- `/start`: Show the welcome message and interactive menu.
+- `/help`: Show this complete list of commands.
+- `/info`: Display bot information and uptime.
+- `/ping`: Check the bot's responsiveness.
+- `/alive`: Check if the bot is running.
 
-1.  Log in to your [Replit](https://replit.com/) account.
-2.  Click the **`+ Create Repl`** button in the top left corner.
-3.  In the creation dialog, click the **`Import from GitHub`** button on the top right.
-4.  Paste the URL of your GitHub repository into the field.
-5.  Click **`Import from GitHub`** to create the Repl.
+#### AI & Creative Tools
+- `/ai [prompt]`: Explicitly ask the AI something (maintains conversation history).
+- `/image [prompt]`: Generate an image from a text description.
+  - **Advanced Options:**
+    - `--ar <ratio>`: Set aspect ratio (e.g., `16:9`, `9:16`, `1:1`).
+    - `--neg "<text>"`: Exclude things from the image.
+  - **Example:** `/image a knight on a horse --ar 16:9 --neg "poorly drawn"`
+- `/joke`: Get a random joke.
+- `/quote`: Get a random inspirational quote.
+- `/recipe [dish]`: Find a recipe for a specific dish.
 
-Replit will now clone your repository and set up the environment.
+#### Utility Commands
+- `/qr [text]`: Create a QR code.
+- `/password [length]`: Generate a secure password (default length 16).
+- `/calc [expression]`: Evaluate a mathematical expression.
+- `/tr [lang] [text]`: Translate text (e.g., `/tr spanish Hello`).
+- `/stickerid`: Reply to a sticker to get its ID.
+- `/poll "[question]" "[option1]" "[option2]"`: Create a poll in a group.
+- `/dice`: Roll a six-sided die.
+- `/echo [message]`: I'll repeat what you say.
 
-### Step 2: Configure Secrets (Environment Variables)
+#### Information Commands
+- `/weather [city]`: Get the current weather.
+- `/crypto [coin]`: Fetch cryptocurrency prices.
+- `/movie [title]`: Get information about a movie.
+- `/news`: Read the latest world news headlines.
+- `/wiki [query]`: Search Wikipedia.
+- `/yt [query]`: Search for YouTube videos.
+- `/define [word]`: Get the definition of a word.
 
-Your bot token is a secret and should never be written directly in your code. Replit's Secrets feature is the perfect place to store it.
+#### Group Admin Commands
+- `/setwelcome [message]`: Set a custom welcome message. Use `{name}` as a placeholder for the new member's name.
+- `/clearchat`: Clear the AI's conversation history for the current chat.
 
-1.  Once your Repl is created, look for the **`Secrets`** tab (it has a padlock icon 🔒) in the left sidebar under "Tools".
-2.  Add the following key-value pairs one by one:
+## 👤 Credit
 
-| Key         | Value                                                 |
-|-------------|-------------------------------------------------------|
-| `BOT_TOKEN` | The token you got from `@BotFather`.                  |
-| `OWNER_ID`  | Your personal Telegram User ID.                       |
-| `PREFIX`    | (Optional) A single character for commands, e.g., `.` |
+This bot was created with love by **Judson Saji**.
 
-### Step 3: Run the Bot
-
-1.  Simply click the big green **`Run`** button at the top of the screen.
-2.  Replit will automatically:
-    *   **Install dependencies**: Runs `npm install`.
-    *   **Build the code**: Runs `npm run build` to compile TypeScript to JavaScript.
-    *   **Start the bot**: Runs `npm start` to launch your bot.
-3.  You will see output in the **`Console`** window, including "Bot started..." and a list of all the loaded plugins.
-
-### Step 4: Keeping the Bot Online (24/7)
-
-By default, a Replit Repl will go to sleep after a period of inactivity. To keep your bot running 24/7, you need to deploy it.
-
-1.  Click the **`Deploy`** button at the top right of your Repl's workspace.
-2.  Choose the **"Reserved VM"** type for a background worker.
-3.  Follow the on-screen prompts to configure and launch your deployment.
-
-For more information, see the official Replit documentation on [Deploying your projects](https://docs.replit.com/hosting/deployments/about-deployments).
-
-Your bot is now fully deployed and running on Replit!
-
----
-
-**Note**: The bot uses a simple file-based database (`db.json`). This file will be created automatically in your Replit's file system the first time you use a feature that requires it, like `/setwelcome`.
+Credit: [VAMPIRE_KING_NO_1](https://t.me/VAMPIRE_KING_NO_1)

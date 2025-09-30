@@ -7,7 +7,7 @@ import TelegramBot from 'node-telegram-bot-api';
 
 export const name = 'quotes';
 
-const quotes = [
+export const quotes = [
     "The only way to do great work is to love what you do. - Steve Jobs",
     "Believe you can and you're halfway there. - Theodore Roosevelt",
     "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",

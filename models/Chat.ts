@@ -6,4 +6,5 @@
 export interface Chat {
   id: number;
   welcomeMessage?: string;
+  history?: { role: string; parts: { text: string }[] }[];
 }
