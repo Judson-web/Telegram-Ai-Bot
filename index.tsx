@@ -21,11 +21,11 @@ const bot = new TelegramBot(token, { polling: true });
 
 console.log('Bot started...');
 
-// Dynamically load plugins
+// Dynamically load plugins from the compiled 'dist' directory
 const pluginsDir = path.join(__dirname, 'plugins');
 
 fs.readdirSync(pluginsDir)
-  .filter(file => file.endsWith('.js') || file.endsWith('.ts'))
+  .filter(file => file.endsWith('.js')) // Look for compiled JavaScript files
   .forEach(file => {
     try {
       const plugin = require(path.join(pluginsDir, file));

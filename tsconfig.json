@@ -10,7 +10,10 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "./**/*.ts"
+    "index.tsx",
+    "lib/**/*.ts",
+    "models/**/*.ts",
+    "plugins/**/*.ts"
   ],
   "exclude": [
     "node_modules"
