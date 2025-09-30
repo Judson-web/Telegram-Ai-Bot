@@ -10,7 +10,7 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "index.tsx",
+    "index.ts",
     "lib/**/*.ts",
     "models/**/*.ts",
     "plugins/**/*.ts"
