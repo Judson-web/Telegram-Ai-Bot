@@ -1,0 +1,12 @@
+# The command to run when the "Run" button is pressed.
+run = "npm run dev"
+
+# The main file of the project.
+entrypoint = "index.ts"
+
+# Specifies the package manager configuration for TypeScript.
+[packager]
+language = "typescript"
+
+[languages.typescript]
+pattern = "**/*.ts"
