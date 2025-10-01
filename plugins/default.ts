@@ -34,7 +34,6 @@ export const initialize = (bot: TelegramBot) => {
       const prompt = msg.text;
 
       const response: GenerateContentResponse = await ai.models.generateContent({
-        // FIX: Corrected model name from 'gemini-2.普通のFlash' to 'gemini-2.5-flash'.
         model: 'gemini-2.5-flash',
         contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
         config: {
