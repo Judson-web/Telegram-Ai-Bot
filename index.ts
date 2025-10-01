@@ -34,9 +34,13 @@ console.log('NexAi Bot has been started...');
 
 const pluginsDir = path.join(__dirname, 'plugins');
 
+// This robustly determines the file extension to look for.
+// It will be '.ts' when running with ts-node (development) 
+// and '.js' when running the compiled code from /dist (production).
+const fileExtension = path.extname(__filename); 
+
 fs.readdirSync(pluginsDir).forEach(file => {
-  // Look for compiled JavaScript files in the build directory
-  if (file.endsWith('.js')) {
+  if (file.endsWith(fileExtension)) {
     const pluginPath = path.join(pluginsDir, file);
     try {
       // Dynamically require plugin files
