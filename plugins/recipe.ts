@@ -4,7 +4,7 @@
 */
 
 import TelegramBot from 'node-telegram-bot-api';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 
 export const name = 'recipe_finder';
 
@@ -24,14 +24,35 @@ export const initialize = (bot: TelegramBot) => {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Find a simple recipe for "${dish}". Please format the response with a list of ingredients and then numbered step-by-step instructions. Use Markdown for formatting.`;
       
-      const response = await ai.models.generateContent({
+      const response: GenerateContentResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: { tools: [{ googleSearch: {} }] }
       });
 
-      const recipe = response.text;
-      bot.sendMessage(chatId, `🍲 *Recipe for ${dish}*\n\n${recipe}`, { parse_mode: 'Markdown' });
+      let recipe = response.text;
+
+      const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+      if (groundingChunks && groundingChunks.length > 0) {
+        const citations = groundingChunks
+          .map((chunk, index) => {
+            const title = chunk.web?.title || chunk.web?.uri || 'Source';
+            const uri = chunk.web?.uri;
+            if (uri) {
+              const sanitizedTitle = title.replace(/\[/g, '(').replace(/\]/g, ')');
+              return `${index + 1}. [${sanitizedTitle}](${uri})`;
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .join('\n');
+          
+        if (citations) {
+            recipe += `\n\n*Sources:*\n${citations}`;
+        }
+      }
+
+      bot.sendMessage(chatId, `🍲 *Recipe for ${dish}*\n\n${recipe}`, { parse_mode: 'Markdown', disable_web_page_preview: true });
 
     } catch (error) {
       console.error('Recipe Error:', error);

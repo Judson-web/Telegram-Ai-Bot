@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 import { Chat } from '../models/Chat';
 
@@ -15,28 +15,35 @@ interface DatabaseSchema {
 
 let database: DatabaseSchema = {};
 
-const loadDatabase = () => {
+const loadDatabase = async () => {
   try {
-    if (fs.existsSync(dbPath)) {
-      const data = fs.readFileSync(dbPath, 'utf-8');
-      database = JSON.parse(data);
+    const data = await fs.readFile(dbPath, 'utf-8');
+    database = JSON.parse(data);
+    console.log('Database loaded successfully.');
+  } catch (error: any) {
+    if (error.code === 'ENOENT') {
+      // File doesn't exist, which is fine on the first run.
+      console.log('No database file found, starting fresh.');
+      database = {};
+    } else {
+      console.error('Error loading database:', error);
+      database = {};
     }
-  } catch (error) {
-    console.error('Error loading database:', error);
-    database = {};
   }
 };
 
-const saveDatabase = () => {
+const saveDatabase = async () => {
   try {
-    fs.writeFileSync(dbPath, JSON.stringify(database, null, 2));
+    await fs.writeFile(dbPath, JSON.stringify(database, null, 2));
   } catch (error) {
     console.error('Error saving database:', error);
   }
 };
 
 // Load the database on startup
-loadDatabase();
+(async () => {
+  await loadDatabase();
+})();
 
 export const getChat = async (chatId: number): Promise<Chat | undefined> => {
   return database[chatId];
@@ -47,6 +54,6 @@ export const updateChat = async (chatId: number, data: Partial<Chat>): Promise<C
     database[chatId] = { id: chatId };
   }
   database[chatId] = { ...database[chatId], ...data };
-  saveDatabase();
+  await saveDatabase();
   return database[chatId];
 };

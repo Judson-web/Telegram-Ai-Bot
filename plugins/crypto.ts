@@ -4,7 +4,7 @@
 */
 
 import TelegramBot from 'node-telegram-bot-api';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 
 export const name = 'crypto_price';
 
@@ -24,14 +24,35 @@ export const initialize = (bot: TelegramBot) => {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Get the current price of the cryptocurrency "${coin}" in USD. Also provide its 24-hour percentage change. Format it nicely for a Telegram message.`;
       
-      const response = await ai.models.generateContent({
+      const response: GenerateContentResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: { tools: [{ googleSearch: {} }] }
       });
 
-      const priceInfo = response.text;
-      bot.sendMessage(chatId, priceInfo, { parse_mode: 'Markdown' });
+      let priceInfo = response.text;
+      
+      const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+      if (groundingChunks && groundingChunks.length > 0) {
+        const citations = groundingChunks
+          .map((chunk, index) => {
+            const title = chunk.web?.title || chunk.web?.uri || 'Source';
+            const uri = chunk.web?.uri;
+            if (uri) {
+              const sanitizedTitle = title.replace(/\[/g, '(').replace(/\]/g, ')');
+              return `${index + 1}. [${sanitizedTitle}](${uri})`;
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .join('\n');
+          
+        if (citations) {
+            priceInfo += `\n\n*Sources:*\n${citations}`;
+        }
+      }
+
+      bot.sendMessage(chatId, priceInfo, { parse_mode: 'Markdown', disable_web_page_preview: true });
 
     } catch (error) {
       console.error('Crypto Price Error:', error);

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "pm2-runtime start dist/index.js --name telegram-bot",
-    "dev": "ts-node index.tsx"
+    "dev": "ts-node index.ts"
   },
   "author": "",
   "license": "Apache-2.0",

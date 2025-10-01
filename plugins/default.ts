@@ -4,7 +4,7 @@
 */
 
 import TelegramBot from 'node-telegram-bot-api';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 import { getChat, updateChat } from '../lib/database';
 
 export const name = 'default_ai_handler';
@@ -33,7 +33,7 @@ export const initialize = (bot: TelegramBot) => {
       const history = chatSettings.history || [];
       const prompt = msg.text;
 
-      const response = await ai.models.generateContent({
+      const response: GenerateContentResponse = await ai.models.generateContent({
         // FIX: Corrected model name from 'gemini-2.普通のFlash' to 'gemini-2.5-flash'.
         model: 'gemini-2.5-flash',
         contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
@@ -48,9 +48,21 @@ export const initialize = (bot: TelegramBot) => {
       const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
       if (groundingChunks && groundingChunks.length > 0) {
         const citations = groundingChunks
-          .map((chunk, index) => `[${index + 1}] ${chunk.web?.title}: ${chunk.web?.uri}`)
+          .map((chunk, index) => {
+            const title = chunk.web?.title || chunk.web?.uri || 'Source';
+            const uri = chunk.web?.uri;
+            if (uri) {
+              const sanitizedTitle = title.replace(/\[/g, '(').replace(/\]/g, ')');
+              return `${index + 1}. [${sanitizedTitle}](${uri})`;
+            }
+            return null;
+          })
+          .filter(Boolean)
           .join('\n');
-        text += `\n\n*Sources:*\n${citations}`;
+          
+        if (citations) {
+            text += `\n\n*Sources:*\n${citations}`;
+        }
       }
       
       const newHistory = [
@@ -66,7 +78,7 @@ export const initialize = (bot: TelegramBot) => {
 
       await updateChat(chatId, { history: newHistory });
 
-      bot.sendMessage(chatId, text, { parse_mode: 'Markdown' });
+      bot.sendMessage(chatId, text, { parse_mode: 'Markdown', disable_web_page_preview: true });
 
     } catch (error) {
       console.error('Gemini API Error:', error);

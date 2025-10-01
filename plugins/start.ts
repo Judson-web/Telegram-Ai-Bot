@@ -22,8 +22,7 @@ const helpMessage = `Here are my available commands:
 /image [prompt] - Generate an image from a text description.
   _Advanced Options:_
   \`--ar \\<ratio\\>\` - Set aspect ratio (e.g., 16:9, 9:16, 1:1).
-  \`--neg "\\<text\\>"\` - Exclude things from the image.
-  _Example:_ \`/image a knight on a horse --ar 16:9 --neg "poorly drawn"\`
+  _Example:_ \`/image a knight on a horse --ar 16:9\`
 /joke - Get a random joke.
 /quote - Get a random inspirational quote.
 /recipe [dish] - Find a recipe for a specific dish.
@@ -39,6 +38,7 @@ const helpMessage = `Here are my available commands:
 /echo [message] - I'll repeat what you say.
 
 *🔍 Information Commands:*
+/profile - Display your Telegram user information.
 /weather [city] - Get the current weather.
 /crypto [coin] - Fetch cryptocurrency prices.
 /movie [title] - Get information about a movie.

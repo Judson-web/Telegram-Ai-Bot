@@ -4,7 +4,7 @@
 */
 
 import TelegramBot from 'node-telegram-bot-api';
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
 
 export const name = 'news';
 
@@ -23,13 +23,37 @@ export const initialize = (bot: TelegramBot) => {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const prompt = `Get the top 3 latest world news headlines. For each headline, provide a one-sentence summary and a source link if available.`;
       
-      const response = await ai.models.generateContent({
+      const response: GenerateContentResponse = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
         config: { tools: [{ googleSearch: {} }] }
       });
 
-      const news = response.text;
+      let news = response.text;
+      
+      const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
+      if (groundingChunks && groundingChunks.length > 0) {
+        const citations = groundingChunks
+          .map((chunk, index) => {
+            const title = chunk.web?.title || chunk.web?.uri || 'Source';
+            const uri = chunk.web?.uri;
+            if (uri) {
+              const sanitizedTitle = title.replace(/\[/g, '(').replace(/\]/g, ')');
+              return `${index + 1}. [${sanitizedTitle}](${uri})`;
+            }
+            return null;
+          })
+          .filter(Boolean)
+          .join('\n');
+          
+        if (citations) {
+            // Check if sources are already in the main text to avoid duplication
+            if (!news.includes(citations.substring(0, 20))) {
+                 news += `\n\n*Sources:*\n${citations}`;
+            }
+        }
+      }
+
       bot.sendMessage(chatId, `📰 *Latest World News*\n\n${news}`, { parse_mode: 'Markdown', disable_web_page_preview: true });
 
     } catch (error) {

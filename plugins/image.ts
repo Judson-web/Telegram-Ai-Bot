@@ -29,7 +29,6 @@ export const initialize = (bot: TelegramBot) => {
     try {
         // Argument parsing
         let prompt = fullPrompt;
-        // FIX: Default aspect ratio is '1:1'
         let aspectRatio: "1:1" | "16:9" | "9:16" | "4:3" | "3:4" = '1:1';
         const supportedAspectRatios = ["1:1", "16:9", "9:16", "4:3", "3:4"];
 
@@ -38,13 +37,6 @@ export const initialize = (bot: TelegramBot) => {
         if (arMatch && arMatch[1] && supportedAspectRatios.includes(arMatch[1])) {
             aspectRatio = arMatch[1] as "1:1" | "16:9" | "9:16" | "4:3" | "3:4";
             prompt = prompt.replace(arMatch[0], '').trim();
-        }
-
-        // The --neg argument is mentioned in help but not supported by the generateImages API.
-        // We will parse it out but not use it to avoid errors.
-        const negMatch = prompt.match(/--neg\s+"([^"]+)"/);
-        if (negMatch) {
-            prompt = prompt.replace(negMatch[0], '').trim();
         }
 
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });

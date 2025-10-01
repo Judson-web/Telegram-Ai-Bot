@@ -7,7 +7,7 @@ Welcome to NexAi, a powerful, modular, and intelligent Telegram bot built with N
 - **AI by Default**: No command needed! Chat directly with NexAi for a natural, conversational experience.
 - **Live Internet Access**: Powered by Google Search, NexAi can provide up-to-the-minute information on current events, people, and topics.
 - **Context-Aware Conversations**: NexAi remembers the recent history of your chat to provide relevant and coherent follow-up responses.
-- **Advanced Image Generation**: Create images from text with support for aspect ratios and negative prompts.
+- **Advanced Image Generation**: Create images from text with support for aspect ratios.
 - **Extensive Plugin System**: A huge collection of commands for utilities, information, creative tools, and fun.
 - **Group Ready**: Features custom welcome messages and group-specific commands like polls.
 - **Easy Deployment**: Optimized for a quick and simple setup on Replit.
@@ -60,8 +60,7 @@ Here is a complete list of commands available in NexAi.
 - `/image [prompt]`: Generate an image from a text description.
   - **Advanced Options:**
     - `--ar <ratio>`: Set aspect ratio (e.g., `16:9`, `9:16`, `1:1`).
-    - `--neg "<text>"`: Exclude things from the image.
-  - **Example:** `/image a knight on a horse --ar 16:9 --neg "poorly drawn"`
+  - **Example:** `/image a knight on a horse --ar 16:9`
 - `/joke`: Get a random joke.
 - `/quote`: Get a random inspirational quote.
 - `/recipe [dish]`: Find a recipe for a specific dish.
